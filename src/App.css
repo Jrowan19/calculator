@@ -31,3 +31,14 @@
     transform: rotate(360deg);
   }
 }
+
+.calc {
+  background-color: black;
+}
+
+
+
+.btn-responsive {
+  white-space: normal !important;
+  word-wrap: break-word;
+}
