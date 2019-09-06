@@ -7,10 +7,8 @@ const Screen = ({ handleChange, numbers }) => {
         <div className="col">
           <input
             className="form-control "
-            readOnly
             type="text"
             placeholder="0"
-            name="number"
             value={numbers}
             onChange={handleChange}
           />

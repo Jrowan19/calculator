@@ -6,10 +6,18 @@ class Buttons extends Component {
     numbers: 0
   };
 
-  handleButton = button => {
-    console.log(button);
+  handleNumbers = button => {
+    console.log(button, this);
     const { numbers } = this.state;
     this.setState({ numbers: numbers + button });
+  };
+
+  handleOperators = button => {
+    console.log(this, button);
+    const { operators } = this.state;
+    if (button === '=') {
+      this.calculate();
+    } else this.setState({ operators: operators + button });
   };
 
   handleChange = e => {
@@ -20,16 +28,34 @@ class Buttons extends Component {
 
   handleAC = () => {
     const { numbers } = this.state;
-    this.setState({ numbers: numbers.slice(0, 0) });
+    if (numbers === 0) return null;
+    this.setState({ numbers: '' });
+  };
+
+  backSpace = () => {
+    const { numbers } = this.state;
+    this.setState({ numbers: numbers.slice(0, -1) });
+  };
+
+  calculate = () => {
+    const { numbers } = this.state;
+    if (numbers === 0) {
+      return null;
+    } else
+      this.setState({
+        numbers: eval(numbers || null)
+      });
   };
 
   render() {
-    const { numbers } = this.state;
+    const { numbers, operators } = this.state;
     return (
-      <div className="container border border-dark rounded mt-5 mx-auto calc">
+      <div className="container border border-dark rounded mt-5 mb-3mx-auto calc">
         <Screen
-          handlebutton={this.handleButton}
+          handleNumbers={this.handleNumbers}
+          handleOperators={this.handleOperators}
           numbers={numbers}
+          operators={operators}
           handleChange={this.handleChange}
           handleAC={this.handleAC}
         />
@@ -39,7 +65,6 @@ class Buttons extends Component {
               className="btn btn-secondary lg"
               name="0"
               onClick={this.handleAC}
-              disabled={numbers === 0}
             >
               AC
             </button>
@@ -48,17 +73,21 @@ class Buttons extends Component {
             <button className="btn btn-secondary lg">+/-</button>
           </div>
           <div className="col">
-            <button className="btn btn-secondary lg">
-              <i className="fas fa-percent"></i>
+            <button
+              className="btn btn-secondary lg font-weight-bold"
+              onClick={e => this.handleNumbers(e.target.name)}
+              name="%"
+            >
+              %
             </button>
           </div>
           <div className="col">
             <button
-              className="btn btn-warning lg"
-              onClick={e => this.handleButton(e.target.name)}
-              name="\"
+              className="btn btn-warning lg font-weight-bold"
+              name="/"
+              onClick={e => this.handleNumbers(e.target.name)}
             >
-              <i className="fas fa-divide"></i>
+              /
             </button>
           </div>
         </div>
@@ -67,7 +96,7 @@ class Buttons extends Component {
             <button
               className="btn btn-dark lg"
               name="7"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               7
             </button>
@@ -76,7 +105,7 @@ class Buttons extends Component {
             <button
               className="btn btn-dark lg"
               name="8"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               8
             </button>
@@ -86,7 +115,7 @@ class Buttons extends Component {
             <button
               className="btn btn-dark lg"
               name="9"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               9
             </button>
@@ -94,11 +123,11 @@ class Buttons extends Component {
           <div className="col">
             {' '}
             <button
-              className="btn btn-warning lg"
-              onClick={e => this.handleButton(e.target.name)}
+              className="btn btn-warning lg font-weight-bold"
+              onClick={e => this.handleNumbers(e.target.name)}
               name="*"
             >
-              <i className="fas fa-times"></i>
+              x
             </button>
           </div>
         </div>
@@ -107,7 +136,7 @@ class Buttons extends Component {
             <button
               className="btn btn-dark lg"
               name="4"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               4
             </button>
@@ -116,7 +145,7 @@ class Buttons extends Component {
             <button
               className="btn btn-dark lg"
               name="5"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               5
             </button>
@@ -125,7 +154,7 @@ class Buttons extends Component {
             {' '}
             <button
               className="btn btn-dark lg"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
               name="6"
             >
               6
@@ -134,11 +163,12 @@ class Buttons extends Component {
           <div className="col">
             {' '}
             <button
-              className="btn btn-warning lg"
+              className="btn btn-warning lg font-weight-bold"
               name="-"
-              onClick={e => this.handleButton(e.target.name)}
+              value={'-'}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
-              <i className="fas fa-minus"></i>
+              -
             </button>
           </div>
         </div>{' '}
@@ -147,7 +177,7 @@ class Buttons extends Component {
             <button
               className="btn btn-dark lg"
               name="1"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               1
             </button>
@@ -156,7 +186,7 @@ class Buttons extends Component {
             <button
               className="btn btn-dark lg"
               name="2"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               2
             </button>
@@ -166,7 +196,7 @@ class Buttons extends Component {
             <button
               className="btn btn-dark lg"
               name="3"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               3
             </button>
@@ -174,38 +204,50 @@ class Buttons extends Component {
           <div className="col">
             {' '}
             <button
-              className="btn btn-warning lg"
-              onClick={e => this.handleButton(e.target.name)}
+              className="btn btn-warning lg font-weight-bold"
+              onClick={e => this.handleNumbers(e.target.name)}
               name="+"
             >
-              <i className="fas fa-plus"></i>
+              +
             </button>
           </div>
         </div>
-        <div className="row align-items-end mt-3 mb-1">
-          <div className="col-6 ">
+        <div className="row align-items-end mt-3">
+          <div className="col mb-3">
             <button
               className="btn btn-dark lg ml-5 mx-auto"
-              style={{ width: '20rem' }}
               name="0"
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               0
             </button>
           </div>
-          <div className="col">
+          <div className="col mb-3">
+            <button
+              className="btn btn-dark lg ml-5 mx-auto"
+              name="backspace"
+              onClick={e => this.backSpace(e.target.name)}
+            >
+              DEL
+            </button>
+          </div>
+          <div className="col mb-3">
             <button
               className="btn btn-dark lg font-weight-bold"
               name="."
-              onClick={e => this.handleButton(e.target.name)}
+              onClick={e => this.handleNumbers(e.target.name)}
             >
               .
             </button>
           </div>
-          <div className="col">
+          <div className="col mb-3">
             {' '}
-            <button className="btn btn-warning lg" name="=">
-              <i className="fas fa-equals"></i>
+            <button
+              className="btn btn-warning lg font-weight-bold"
+              onClick={e => this.calculate(e.target.name)}
+              name="="
+            >
+              =
             </button>
           </div>
         </div>
