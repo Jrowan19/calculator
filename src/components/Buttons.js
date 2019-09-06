@@ -257,3 +257,22 @@ class Buttons extends Component {
 }
 
 export default Buttons;
+
+// onClick={e => this.handleNumbers(e.target.name)}
+// >
+//   .
+// </button>
+// </div>
+// <div className="col mb-3">
+// {' '}
+// <button
+//   className="btn btn-warning lg font-weight-bold"
+//   onClick={e => this.calculate(e.target.name)}
+//   name="="
+// >
+//   =
+// </button>
+// </div>
+// </div>
+// </div>
+// );
