@@ -12,14 +12,6 @@ class Buttons extends Component {
     this.setState({ numbers: numbers + button });
   };
 
-  handleOperators = button => {
-    console.log(this, button);
-    const { operators } = this.state;
-    if (button === '=') {
-      this.calculate();
-    } else this.setState({ operators: operators + button });
-  };
-
   handleChange = e => {
     console.log(e.target.value);
     const { value } = e.target;
@@ -43,7 +35,7 @@ class Buttons extends Component {
       return null;
     } else
       this.setState({
-        numbers: eval(numbers || null)
+        numbers: eval(numbers || '')
       });
   };
 
@@ -70,7 +62,13 @@ class Buttons extends Component {
             </button>
           </div>
           <div className="col">
-            <button className="btn btn-secondary lg">+/-</button>
+            <button
+              className="btn btn-secondary lg"
+              name=""
+              onClick={e => this.handleNumbers(e.target.name)}
+            >
+              +/-
+            </button>
           </div>
           <div className="col">
             <button
